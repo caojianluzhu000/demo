@@ -1,4 +1,4 @@
-package model;
+package spring5.demo.model;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,7 +14,7 @@ public class Author {
     private String firstName;
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authorSet")
     private Set<Book> books;
 
     public Author(String firstName, String lastName, Set<Book> books) {

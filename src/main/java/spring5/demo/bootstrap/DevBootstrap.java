@@ -1,31 +1,30 @@
-package bootstrap;
+package spring5.demo.bootstrap;
 
-import model.Author;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import repositories.AuthorRepository;
-import repositories.BookRepository;
+import spring5.demo.model.Author;
+import spring5.demo.repositories.AuthorRepository;
+import spring5.demo.repositories.BookRepository;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import java.sql.SQLException;
-
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
     private AuthorRepository authorRepository;
+
+    public DevBootstrap(BookRepository bookRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        System.out.println("start applications");
         createTables();
         initData();
     }
@@ -42,45 +41,34 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         try {
             // STEP 1: Register JDBC driver
             Class.forName(JDBC_DRIVER);
-
-            //STEP 2: Open a connection
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //STEP 3: Execute a query
-            System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
-            String sql =  "CREATE TABLE  AUTHOR " +
-                    "(id INTEGER not NULL, " +
-                    " first VARCHAR(255), " +
-                    " last VARCHAR(255), " +
-                    " book INTEGER, " +
-                    " PRIMARY KEY ( id ))";
+            String sql = "";
             stmt.executeUpdate(sql);
-            System.out.println("Created table in given database...");
 
             // STEP 4: Clean-up environment
             stmt.close();
             conn.close();
-        } catch(SQLException se) {
+        } catch (SQLException se) {
             //Handle errors for JDBC
             se.printStackTrace();
-        } catch(Exception e) {
+        } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
         } finally {
             //finally block used to close resources
-            try{
-                if(stmt!=null) stmt.close();
-            } catch(SQLException se2) {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2) {
             } // nothing we can do
             try {
-                if(conn!=null) conn.close();
-            } catch(SQLException se){
+                if (conn != null) conn.close();
+            } catch (SQLException se) {
                 se.printStackTrace();
             } //end finally try
         } //end try
-        System.out.println("Goodbye!");
     }
 
 

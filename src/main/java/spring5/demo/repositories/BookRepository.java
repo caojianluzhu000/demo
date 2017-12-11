@@ -1,7 +1,7 @@
-package repositories;
+package spring5.demo.repositories;
 
 
-import model.Book;
+import spring5.demo.model.Book;
 import org.springframework.data.repository.CrudRepository;
 
 public interface BookRepository extends CrudRepository<Book, Long>{

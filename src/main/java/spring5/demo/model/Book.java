@@ -1,4 +1,4 @@
-package model;
+package spring5.demo.model;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +13,7 @@ public class Book {
 
     private String title;
     private String publisher;
+
 
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
