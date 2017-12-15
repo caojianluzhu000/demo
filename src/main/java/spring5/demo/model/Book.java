@@ -1,6 +1,7 @@
 package spring5.demo.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,22 +13,49 @@ public class Book {
     private Long id;
 
     private String title;
+    private String isbn;
     private String publisher;
 
 
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
     inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authorSet;
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {
     }
 
-    public Book(Long id, String title, String publisher, Set<Author> authorSet) {
-        this.id = id;
+    public Book(String title, String isbn, String publisher) {
         this.title = title;
+        this.isbn = isbn;
         this.publisher = publisher;
-        this.authorSet = authorSet;
+    }
+
+    public Book(String title, String isbn, String publisher, Set<Author> authors) {
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.authors = authors;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void add(Author author){
+        this.authors.add(author);
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     public Long getId() {
@@ -55,11 +83,11 @@ public class Book {
     }
 
     public Set<Author> getAuthorSet() {
-        return authorSet;
+        return authors;
     }
 
     public void setAuthorSet(Set<Author> authorSet) {
-        this.authorSet = authorSet;
+        this.authors = authorSet;
     }
 
     @Override
@@ -83,7 +111,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", authorSet=" + authorSet +
+                ", authorSet=" + authors +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package spring5.demo.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,8 +15,8 @@ public class Author {
     private String firstName;
     private String lastName;
 
-    @ManyToMany(mappedBy = "authorSet")
-    private Set<Book> books;
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books = new HashSet<>();
 
     public Author(String firstName, String lastName, Set<Book> books) {
         this.firstName = firstName;
@@ -24,6 +25,12 @@ public class Author {
     }
 
     public Author() {
+    }
+
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Long getId() {
@@ -56,6 +63,10 @@ public class Author {
 
     public void setBooks(Set<Book> books) {
         this.books = books;
+    }
+
+    public void add(Book book){
+        this.books.add(book);
     }
 
     @Override
