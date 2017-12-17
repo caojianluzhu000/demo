@@ -14,7 +14,11 @@ public class Book {
 
     private String title;
     private String isbn;
-    private String publisher;
+
+
+    @OneToOne(cascade = {CascadeType.ALL})
+//    @JoinColumn(name = "performancelog_id")
+    private Publisher publisher;
 
 
     @ManyToMany
@@ -25,18 +29,12 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String isbn, String publisher) {
+    public Book(String title, String isbn, Publisher publisher) {
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
     }
 
-    public Book(String title, String isbn, String publisher, Set<Author> authors) {
-        this.title = title;
-        this.isbn = isbn;
-        this.publisher = publisher;
-        this.authors = authors;
-    }
 
     public String getIsbn() {
         return isbn;
@@ -74,11 +72,11 @@ public class Book {
         this.title = title;
     }
 
-    public String getPublisher() {
+    public Publisher getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
+    public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
 
